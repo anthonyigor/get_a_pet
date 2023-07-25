@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const getToken = require('./get-token')
 
 const checkToken = (req, res, next) => {
+
+    // stop if no have authorization token in header
     if (!req.headers.authorization) {
         return res.status(401).json({message: 'Acesso negado!'})
     }
