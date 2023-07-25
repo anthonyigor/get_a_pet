@@ -1,6 +1,11 @@
-const createUserToken = require('../helpers/create-user-token')
 const User = require('../models/User')
+
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+
+// helpers
+const createUserToken = require('../helpers/create-user-token')
+const getToken = require('../helpers/get-token')
 
 module.exports = class UserController {
 
@@ -90,5 +95,36 @@ module.exports = class UserController {
         }
 
         await createUserToken(user, req, res)
+    }
+
+    static async checkUser(req, res) {
+        let currentUser 
+
+        // get user by token
+        if (req.headers.authorization) {
+            const token = getToken(req)
+            const decoded = jwt.verify(token, 'mysecret')
+            currentUser = await User.findById(decoded.id)
+
+            currentUser.password = undefined
+        } else {
+            currentUser = null
+        }
+
+        res.status(200).send(currentUser)
+    }
+
+    static async getUserById(req, res) {
+
+        const id = req.params.id
+        const user = await User.findById(id).select('-password')
+
+        if (!user) {
+            res.status(422).json({message: 'Usuário não encontrado!'})
+            return
+        }
+
+        res.status(200).json({user})
+
     }
 }
