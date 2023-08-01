@@ -9,6 +9,7 @@ module.exports = class PetController {
         
         const {name, age, weight, color} = req.body
         const available = true
+        const images = req.files
 
         // validations
         if (!name) {
@@ -25,6 +26,10 @@ module.exports = class PetController {
         }
         if (!color) {
             res.status(422).json({message: "A cor é obrigatória!"})
+            return
+        }
+        if (images.length === 0) {
+            res.status(422).json({message: "A imagem é obrigatória!"})
             return
         }
 
@@ -45,6 +50,11 @@ module.exports = class PetController {
                 image: user.image,
                 phone: user.phone
             }
+        })
+
+        // map the image array(req.files) and add only the filenames in database
+        images.map((image) => {
+            pet.images.push(image.filename)
         })
 
         // save pet in db
