@@ -8,17 +8,20 @@ import Home from './components/pages/Home'
 // components
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
+import Container from './components/layout/Container'
 
 
 function App() {
   return (
     <Router>
     <Navbar />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
+    <Container>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Container>
     <Footer />
     </Router>
   );
