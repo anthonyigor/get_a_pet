@@ -10,19 +10,23 @@ import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Container from './components/layout/Container'
 
+// context
+import { UserProvider } from './context/UserContext'
 
 function App() {
   return (
     <Router>
-    <Navbar />
-    <Container>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Container>
-    <Footer />
+      <UserProvider>
+        <Navbar />
+        <Container>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Container>
+        <Footer />
+      </UserProvider>
     </Router>
   );
 }
