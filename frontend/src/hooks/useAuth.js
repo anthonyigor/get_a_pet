@@ -10,6 +10,18 @@ export default function useAuth() {
     const [authenticated, setAuthenticated] = useState(false)
     const navigate = useNavigate()
 
+    // send the user token from the api
+    useEffect(() => {
+
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`
+            setAuthenticated(true)
+        }
+
+    }, [])
+
     async function register(user) {
 
         let msgText = 'Cadastro realizado com sucesso!'
@@ -40,6 +52,6 @@ export default function useAuth() {
 
     }
 
-    return {register}
+    return {authenticated, register}
 
 }
