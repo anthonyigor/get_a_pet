@@ -40,16 +40,36 @@ export default function useAuth() {
 
         // event emit 'flash'
         setFlashMessage(msgText, msgType)
+    }
 
-        // login user after register
-        async function authUser(data) {
+    async function login(user) {
 
-            setAuthenticated(true)
-            localStorage.setItem('token', JSON.stringify(data.token))
+        let msgText = 'Login realizado com sucesso!'
+        let msgType = 'success'
 
-            navigate('/')
+        try {
+
+            const data = await api.post('/users/login', user)
+            .then((response) => {
+                return response.data
+            })
+
+            await authUser(data)
+        } catch (error) {
+            msgText = error.response.data.message
+            msgType = 'error'      
         }
 
+        setFlashMessage(msgText, msgType)
+    }
+
+     
+    async function authUser(data) {
+
+        setAuthenticated(true)
+        localStorage.setItem('token', JSON.stringify(data.token))
+
+        navigate('/')
     }
 
     function logout() {
@@ -67,6 +87,6 @@ export default function useAuth() {
 
     }
 
-    return {authenticated, register, logout}
+    return {authenticated, register, logout, login}
 
 }
