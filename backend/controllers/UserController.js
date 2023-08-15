@@ -64,11 +64,12 @@ module.exports = class UserController {
         // save user in db
         try {
             const newUser = await user.save()
+      
             await createUserToken(newUser, req, res)
-
-        } catch (error) {
-            res.status(500).json({message: error})
+          } catch (error) {
+            res.status(500).json({ message: error })
         }
+        
     }
 
     static async login(req, res) {

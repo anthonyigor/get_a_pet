@@ -17,7 +17,7 @@ function Message() {
 
             setTimeout(() => {
                 setVisible(false)
-            }, 3000)
+            }, 5000)
         })
 
     })
